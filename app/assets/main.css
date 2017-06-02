@@ -9,3 +9,9 @@ html {
 .right {
   border:1px solid black;
 }
+
+path {
+   stroke: black;
+   stroke-width: 0.5px;
+   fill: white;
+ }

@@ -39,19 +39,23 @@ const loadStore = currentState => (
             COUNTYNAME: value,
           };
           CountyId.push(key);
-          Promises.push(loadTopoJSON(key));
+          // Promises.push(loadTopoJSON(key));
         });
-        Promise.all(Promises).then((arr) => {
-          arr.forEach((obj) => {
-            newState = newState.mergeIn(['CountyReducers', 'CountyTopoJSON', 'byId'], { [obj.COUNTYID]: obj })
-                               .updateIn(['CountyReducers', 'CountyTopoJSON', 'allIds'], list => list.push(obj.COUNTYID));
-          });
-        }).then(() => {
-          newState = newState
-                            .setIn(['CountyReducers', 'CountyInfo', 'byId'], CountyInfo)
-                            .setIn(['CountyReducers', 'CountyInfo', 'allIds'], CountyId);
-          resolve(newState);
-        });
+
+        newState = newState
+                          .setIn(['CountyReducers', 'CountyInfo', 'byId'], Immutable.fromJS(CountyInfo))
+                          .setIn(['CountyReducers', 'CountyInfo', 'allIds'], Immutable.fromJS(CountyId));
+        resolve(newState);
+
+        // // TODO 抽掉這段
+        // Promise.all(Promises).then((arr) => {
+        //   arr.forEach((obj) => {
+        //     newState = newState.mergeIn(['CountyReducers', 'CountyTopoJSON', 'byId'], Immutable.fromJS({ [obj.COUNTYID]: obj }))
+        //                        .updateIn(['CountyReducers', 'CountyTopoJSON', 'allIds'], list => list.push(obj.COUNTYID));
+        //   });
+        // }).then(() => {
+        //
+        // });
       });
     });
   })
