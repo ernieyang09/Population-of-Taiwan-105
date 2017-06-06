@@ -6,7 +6,9 @@ const ControlConstants = keyMirror({
 });
 
 const DataConstants = keyMirror({
-  GetData: null,
+  LoadCounJson: null,
+  LoadCounStatistic: null,
+  GetVillageData: null,
 });
 
 const Map = {

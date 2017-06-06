@@ -6,60 +6,14 @@ import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import Immutable from 'immutable';
 import * as asyncInitialState from 'redux-async-initial-state';
-import Reducers from './reducers/index';
+import { loadStore, Reducers } from './reducers/index';
 import App from './components/app';
 
 
 require('./assets/main.css');
 require('flexboxgrid');
 
-
-const loadTopoJSON = COUNTYID => (
-  fetch(`assets/TopoJSON/COUN-${COUNTYID}.json`).then(response => (
-      response.json().then(value => ({
-        COUNTYID,
-        TOPOJSON: value,
-      }))
-  ))
-);
-
-const loadStore = currentState => (
-  new Promise((resolve) => {
-    fetch('http://localhost:3004/loadInitData').then((response) => {
-      response.json().then((info) => {
-        const CountyInfo = {};
-        const CountyId = [];
-        const Promises = [];
-        let newState = currentState;
-        Object.entries(info).forEach(([key, value]) => {
-          CountyInfo[key] = {
-            COUNTYID: key,
-            COUNTYNAME: value,
-          };
-          CountyId.push(key);
-          // Promises.push(loadTopoJSON(key));
-        });
-
-        newState = newState
-                          .setIn(['CountyReducers', 'CountyInfo', 'byId'], Immutable.fromJS(CountyInfo))
-                          .setIn(['CountyReducers', 'CountyInfo', 'allIds'], Immutable.fromJS(CountyId));
-        resolve(newState);
-
-        // // TODO 抽掉這段
-        // Promise.all(Promises).then((arr) => {
-        //   arr.forEach((obj) => {
-        //     newState = newState.mergeIn(['CountyReducers', 'CountyTopoJSON', 'byId'], Immutable.fromJS({ [obj.COUNTYID]: obj }))
-        //                        .updateIn(['CountyReducers', 'CountyTopoJSON', 'allIds'], list => list.push(obj.COUNTYID));
-        //   });
-        // }).then(() => {
-        //
-        // });
-      });
-    });
-  })
-);
 
 const store = createStore(Reducers,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
