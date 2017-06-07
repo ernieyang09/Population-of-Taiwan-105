@@ -3,7 +3,7 @@ import DataView from '../components/DataView';
 
 const getSingleData = (props , data) => {
   if(Object.keys(props).length === 0 ) {
-    return [];
+    return ;
   } else {
     const villagecode = parseInt(props.VILLCODE);
     return data.filter(single => single.VillageCode === villagecode)[0];

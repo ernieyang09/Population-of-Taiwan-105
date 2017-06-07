@@ -38,6 +38,16 @@ module.exports = {
                 use: 'css-loader'
               }),
               test: /\.css$/
+            },
+            {
+              test: /\.scss$/,
+              use: [{
+                  loader: "style-loader" // creates style nodes from JS strings
+              }, {
+                  loader: "css-loader?modules" // translates CSS into CommonJS
+              }, {
+                  loader: "sass-loader" // compiles Sass to CSS
+              }]
             }
     ]
   },

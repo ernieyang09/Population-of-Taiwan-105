@@ -10,8 +10,8 @@ const ControlPanel = ({
 }) => {
   return(
     <div>
-      <div><SwitchButton /></div>
-      <Options CounInfos={CounInfos} selected={CounSelected} changeCoun={_changeCoun} />
+      <div style={{ margin: '10px' }}><SwitchButton /></div>
+      <div style={{ margin: '10px' }}><Options CounInfos={CounInfos} selected={CounSelected} changeCoun={_changeCoun} /></div>
     </div>
   )
 };

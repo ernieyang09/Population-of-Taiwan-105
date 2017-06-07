@@ -1,7 +1,7 @@
 import { DataConstants } from '../constants/AppConstants';
 import JSONModel from '../constants/Model/JSONModel';
 
-const getCounDataM = CounID => (
+export const getCounDataM = CounID => (
   new Promise((resolve) => {
     if (!Object.prototype.hasOwnProperty.call(JSONModel.byId, CounID)) {
       fetch(`assets/TopoJSON/COUN-${CounID}.json`).then(response => (
@@ -16,7 +16,7 @@ const getCounDataM = CounID => (
   })
 );
 
-const getCounStatisticM = CounID => (
+export const getCounStatisticM = CounID => (
   new Promise((resolve) => {
     fetch(`assets/Statistic/COUN-${CounID}.json`).then(response => (
       response.json().then((Json) => {

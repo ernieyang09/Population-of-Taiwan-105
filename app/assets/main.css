@@ -2,16 +2,21 @@ html {
 
 }
 
-.left {
-  border:1px solid black;
+.content {
+  border:1px dashed cornflowerblue;
+  min-height: 700px;
 }
 
-.right {
-  border:1px solid black;
+.left, .right {
+  margin:5px 0;
 }
 
-path {
-   stroke: black;
-   stroke-width: 0.5px;
-   fill: white;
+svg {
+  display: block;
+  margin: 0 auto;
+}
+
+.visual path {
+   stroke: white;
+   stroke-width: 0.2px;
  }

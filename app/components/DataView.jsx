@@ -1,18 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as d3 from 'd3';
+import classes from '../assets/barchart.scss';
+
+const width = 600;
+const height = 500;
+
+const margin = {
+  top: 20,
+  right: 50,
+  bottom: 40,
+  left: 50,
+  middle: 40,
+};
 
 const getChart = (VillageData) => {
-  const width = 700;
-  const height = 500;
+  d3.select('.statistic').selectAll('*').remove();
 
-  const margin = {
-    top: 20,
-    right: 50,
-    bottom: 40,
-    left: 50,
-    middle: 40,
-  };
+  const svg = d3.select('.statistic')
+        .attr('width', margin.left + width + margin.right)
+        .attr('height', margin.top + height + margin.bottom)
+        .append('g')
+          .attr('class', 'inner-region')
+          .attr('transform', `translate(${margin.left},${margin.top})`);
+
+  if (VillageData === undefined) {
+    return;
+  }
+
 
   const regionWidth = (width / 2) - margin.middle;
 
@@ -33,13 +48,6 @@ const getChart = (VillageData) => {
       femalePopulation.map((single, index) => Object.values(single)[0]),
     ], array => d3.max(array));
 
-  d3.select('.statistic').selectAll('*').remove();
-  const svg = d3.select('.statistic')
-        .attr('width', margin.left + width + margin.right)
-        .attr('height', margin.top + height + margin.bottom)
-        .append('g')
-          .attr('class', 'inner-region')
-          .attr('transform', `translate(${margin.left},${margin.top})`);
 
   const xScale = d3.scaleLinear()
   .domain([0, X_MAX])
@@ -87,25 +95,29 @@ const getChart = (VillageData) => {
 
   svg.append('g')
     .attr('transform', `translate(${pointA}, 0) scale(-1,1)`)
-    .selectAll('.bar.left')
+    .selectAll(`.${classes.bar}.${classes.left}`)
     .data(malePopulation)
     .enter()
     .append('rect')
-    .attr('class', 'bar right')
+    .attr('class', `${classes.bar} ${classes.left}`)
     .attr('x', 0)
     .attr('y', d => yScale(Object.keys(d)))
+    .transition()
+    .duration(500)
     .attr('width', d => xScale(Object.values(d)))
     .attr('height', yScale.bandwidth());
 
   svg.append('g')
     .attr('transform', `translate(${pointB}, 0) `)
-    .selectAll('.bar.right')
+    .selectAll(`.${classes.bar}.${classes.right}`)
     .data(femalePopulation)
     .enter()
     .append('rect')
-    .attr('class', 'bar right')
+    .attr('class', `${classes.bar} ${classes.right}`)
     .attr('x', 0)
     .attr('y', d => yScale(Object.keys(d)))
+    .transition()
+    .duration(500)
     .attr('width', d => xScale(Object.values(d)))
     .attr('height', yScale.bandwidth());
 };
@@ -115,49 +127,52 @@ const DataView = ({
   VillageData,
   ...props
 }) => (
-  <div className="right col-md-12 col-sm-12 col-xs-12">
-    <div className="row">
-      <div className="col-md-6 col-sm-6  col-xs-12">
-        <h3>現在鄉鎮：{VillageInfo.VILLNAME}</h3>
-        <table>
-          <tbody>
-            <tr>
-              <td>城市名稱</td>
-              <td>{VillageInfo.COUNTYNAME}</td>
-            </tr>
-            <tr>
-              <td>城市代碼</td>
-              <td>{VillageInfo.COUNTYCODE}</td>
-            </tr>
-            <tr>
-              <td>鄉鎮市區名稱</td>
-              <td>{VillageInfo.TOWNNAME}</td>
-            </tr>
-            <tr>
-              <td>鄉鎮市區代碼</td>
-              <td>{VillageInfo.TOWNCODE}</td>
-            </tr>
-            <tr>
-              <td>村里名稱</td>
-              <td>{VillageInfo.VILLNAME}</td>
-            </tr>
-            <tr>
-              <td>村里英文名稱</td>
-              <td>{VillageInfo.VILLENG}</td>
-            </tr>
-            <tr>
-              <td>村裡代碼</td>
-              <td>{VillageInfo.VILLCODE}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div className="col-md-12 col-sm-12  col-xs-12">
-        <svg className="statistic">
-          {
-            getChart(VillageData)
-          }
-        </svg>
+  <div className="right col-md-7 col-sm-12 col-xs-12">
+    <div className="content">
+      <div className="row">
+        <div className="col-md-3 col-sm-6  col-xs-12" style={{ paddingLeft: '30px' }}>
+          <h3>現在鄉鎮：{VillageInfo.VILLNAME}</h3>
+          <table>
+            <tbody>
+              <tr>
+                <td>城市名稱</td>
+                <td>{VillageInfo.COUNTYNAME}</td>
+              </tr>
+              <tr>
+                <td>城市代碼</td>
+                <td>{VillageInfo.COUNTYCODE}</td>
+              </tr>
+              <tr>
+                <td>鄉鎮市區名稱</td>
+                <td>{VillageInfo.TOWNNAME}</td>
+              </tr>
+              <tr>
+                <td>鄉鎮市區代碼</td>
+                <td>{VillageInfo.TOWNCODE}</td>
+              </tr>
+              <tr>
+                <td>村里名稱</td>
+                <td>{VillageInfo.VILLNAME}</td>
+              </tr>
+              <tr>
+                <td>村里英文名稱</td>
+                <td>{VillageInfo.VILLENG}</td>
+              </tr>
+              <tr>
+                <td>村裡代碼</td>
+                <td>{VillageInfo.VILLCODE}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div className="col-md-4 col-sm-12  col-xs-12">
+
+          <svg className="statistic">
+            {
+              getChart(VillageData)
+            }
+          </svg>
+        </div>
       </div>
     </div>
 
